@@ -1,0 +1,1 @@
+nasm loader.asm -o loader.exe
