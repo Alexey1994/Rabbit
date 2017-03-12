@@ -1,0 +1,28 @@
+# Disk DescriptorFile
+version=1
+encoding="windows-1251"
+CID=8bb24d8a
+parentCID=ffffffff
+isNativeSnapshot="no"
+createType="twoGbMaxExtentSparse"
+
+# Extent description
+RW 2934784 SPARSE "Test-s001.vmdk"
+
+# The Disk Data Base 
+#DDB
+
+ddb.adapterType = "ide"
+ddb.geometry.cylinders = "2911"
+ddb.geometry.heads = "16"
+ddb.geometry.sectors = "63"
+ddb.longContentID = "22633d910a4617bd6eb036b98bb24d8a"
+ddb.uuid = "60 00 C2 98 17 3f 1c b0-ee f1 b9 da 63 90 82 a4"
+ddb.virtualHWVersion = "12"
+ddb.uuid.image="c41fe0f8-15a9-4589-a128-fb3a1f56b690"
+ddb.uuid.modification="eda8d4b1-8212-44e1-9856-3ce3b68d16fa"
+ddb.uuid.parent="00000000-0000-0000-0000-000000000000"
+ddb.uuid.parentmodification="00000000-0000-0000-0000-000000000000"
+ddb.geometry.biosCylinders="727"
+ddb.geometry.biosHeads="64"
+ddb.geometry.biosSectors="63"
