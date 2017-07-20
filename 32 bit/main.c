@@ -1,3 +1,10 @@
+void kernel();
+
+void start()
+{
+	kernel();
+}
+
 #include "display output.h"
 
 #include "drivers/ports.h"
@@ -6,9 +13,13 @@
 #include "memory manager/allocator.h"
 
 
-void kernel_main()
+void kernel()
 {
-	print("init");
+	print_character('H');
+	print("Hi");
+	print(0x500);
+
+	for(;;);
 
 	Byte* memory1 = create_memory(10);
 	Byte* memory2 = create_memory(10);

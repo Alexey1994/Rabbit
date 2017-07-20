@@ -1,16 +1,15 @@
 org 0x7C00
 
 start:
-	jmp 0:t
- t:
+	mov ax, $
 	mov ax, cs
 	mov ds, ax
-	mov es, ax
-	mov ss, ax
-	mov sp, $$
+
+	mov ax, 100
+	mov sp, 0x8000        ; stack size for loader = 0x8000 - 0x7c00 - 512 = 512 byte
 	sti
 
-call load_kernel
+	call load_kernel
 
 	lgdt [GDT_pointer]
 	
@@ -19,34 +18,60 @@ call load_kernel
 	or eax, 1
 	mov cr0, eax
 
-	jmp 8:code_32
+	jmp 8:code_32         ; CS register = 8, IP register = code_32
 
-%include "16 bit\disk.asm"
-
-GDT:
-	dq 0
-	dq 0x00CF9A000000FFFF
-	dq 0x00CF92000000FFFF
-
-GDT_pointer:
-	dw $ - GDT - 1
-	dd GDT
+	%include "16 bit\load kernel.asm"
 
 use32
 code_32:
 	mov eax, 16
 	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	mov ss, ax
-	movzx esp, sp
+	mov ss, eax
 
-	;call main
+	mov eax, 123456
+	mov esp, eax
+
 	call 0
-	jmp $ 
+	jmp $
 
-main:
+align 16
+
+GDT:
+	dq 0                  ; dummy
+
+                          ; CODE (CS register = 8)
+	dw 0xffff             ; Segment Limit
+	dw 0                  ; Base address
+	dw 0b1001101000000000 ; segment present   = 1 (segment is valid)
+	                      ; ring              = 00 (maximum)
+	                      ; descriptor type   = 1 (code and data)
+	                      ; type              = 1010 (read/execute)
+	db 0b11001111         ; Granularity       = 1 (max memory size = 4096 * Segment Limit)
+	                      ; 32 bit addressing = 1 (enabled)
+	                      ; L                 = 0
+	                      ; AVL               = 0
+	                      ; Segment Limit     = 1111
+	db 0                  ; Base address
+
+                          ; DATA (DS register = 16)
+	dw 0xffff             ; Segment Limit
+	dw 0                  ; Base address
+	dw 0b1001001000000000 ; segment present   = 1 (segment is valid)
+	                      ; ring              = 00 (maximum)
+	                      ; descriptor type   = 1 (code and data)
+	                      ; type              = 0010 (read/write)
+	db 0b11001111         ; Granularity       = 1 (max memory size = 4096 * Segment Limit)
+	                      ; 32 bit addressing = 1 (enabled)
+	                      ; L                 = 0
+	                      ; AVL               = 0
+	                      ; Segment Limit     = 1111
+	db 0                  ; Base address
+
+GDT_pointer:
+	dw $ - GDT - 1
+	dd GDT
 
 times 510 - ($ - start) db 0
 db 0x55, 0xAA
+
+end:

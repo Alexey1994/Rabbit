@@ -10,4 +10,6 @@ void print_integer(int num);
 void print(Character *array);
 
 
+#include "display output.c"
+
 #endif //DISPLAY_OUTPUT_H_INCLUDED

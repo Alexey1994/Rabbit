@@ -8,4 +8,6 @@
 void put_integer(int num, void(*put_byte)(Byte byte));
 
 
+#include "stream.c"
+
 #endif //STREAM_H_INCLUDED
