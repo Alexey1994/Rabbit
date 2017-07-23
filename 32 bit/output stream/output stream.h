@@ -14,7 +14,7 @@ void initialize_output_stream   (Output_Stream *stream, Byte *source, void (*wri
 void deinitialize_output_stream (Output_Stream *stream);
 
 void write_null_terminated_byte_array_in_output_stream (Output_Stream *stream, Byte *array);
-void write_decimal_integer_number_in_output_stream     (Output_Stream *stream, int number);
+void write_unsigned_integer_in_output_stream           (Output_Stream *stream, unsigned int number);
 
 
 #include "output stream.c"

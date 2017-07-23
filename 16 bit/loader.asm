@@ -4,9 +4,10 @@ start:
 	mov ax, $
 	mov ax, cs
 	mov ds, ax
+	mov ss, ax
 
 	mov ax, 100
-	mov sp, 0x8000        ; stack size for loader = 0x8000 - 0x7c00 - 512 = 512 byte
+	mov sp, 0x8000 - 1     ; stack size for loader = 0x8000 - 0x7c00 - 512 = 512 byte
 	sti
 
 	call load_kernel
@@ -31,7 +32,8 @@ code_32:
 	mov eax, 123456
 	mov esp, eax
 
-	call 0
+	;call 0
+	call end + 512
 	jmp $
 
 align 16

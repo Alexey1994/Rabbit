@@ -21,10 +21,10 @@ void write_null_terminated_byte_array_in_output_stream(Output_Stream *stream, By
 }
 
 
-void write_decimal_integer_number_in_output_stream(Output_Stream *stream, int number)
+void write_unsigned_integer_in_output_stream(Output_Stream *stream, unsigned int number)
 {
-	int number_copy    = number;
-	int right_selector = 1;
+	unsigned int number_copy    = number;
+	int right_selector          = 1;
 
 	for(;;)
 	{
