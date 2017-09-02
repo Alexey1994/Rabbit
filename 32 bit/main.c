@@ -10,7 +10,7 @@ void start()
 
 #include "types.h"
 #include "extends.h"
-#include "output stream/output stream.h"
+#include "output/output.h"
 #include "devices/screen/text screen.h"
 
 
@@ -85,10 +85,10 @@ unsigned int read_PCI_config (Byte bus, Byte device, Byte function, Byte registe
 void kernel()
 {
 	Text_Screen   *default_screen        = get_default_text_screen();
-	Output_Stream *default_screen_stream = get_default_text_screen_output_stream();
+	Output        *default_screen_output = get_default_text_screen_output();
 
 	initialize_text_screen (default_screen, 0x0B8000, 80, 25);
-	initialize_output_stream (default_screen_stream, default_screen, write_byte_in_text_screen);
+	initialize_output (default_screen_output, default_screen, write_byte_in_text_screen);
 
 	unsigned int i;
 	unsigned int j;
@@ -113,16 +113,16 @@ void kernel()
 				print_null_terminated_byte_array(" PCI device:");
 				print_unsigned_integer(config >> 16);
 
-				unsigned int config2 = read_PCI_config(i, j, 0, 2);
-
 				print_null_terminated_byte_array(" PCI class:");
 				print_unsigned_integer(config >> 24);
 
 				print_null_terminated_byte_array(" PCI subclass:");
-				print_unsigned_integer(config >> 16 && 0xff);
+				print_unsigned_integer(config >> 24 && 0xff);
 
-				print_byte(',');
+				print_byte('\n');
 			}
 		}
 	}
+
+	print_null_terminated_byte_array("PCI devices finded\n");
 }
