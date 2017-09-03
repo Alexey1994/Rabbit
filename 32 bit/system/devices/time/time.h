@@ -9,6 +9,8 @@ Byte get_time_seconds();
 Byte get_time_minutes();
 Byte get_time_hours();
 
+void print_date();
+
 
 #include "time.c"
 

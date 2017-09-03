@@ -21,3 +21,29 @@ Byte get_time_hours()
 
 	return ( (hours & 0x0F) + (((hours & 0x70) / 16) * 10) ) | (hours & 0x80);
 }
+
+
+void print_date()
+{
+	print_unsigned_integer( get_time_hours() );
+	print_byte(' ');
+	print_byte(':');
+	print_byte(' ');
+	print_unsigned_integer( get_time_minutes() );
+	print_byte(' ');
+	print_byte(':');
+	print_byte(' ');
+	print_unsigned_integer( get_time_seconds() );
+
+	print_byte(' ');
+	print_byte(' ');
+	print_byte(' ');
+	print_byte(' ');
+	print_byte(' ');
+	print_byte(' ');
+	print_byte(' ');
+	print_byte(' ');
+	print_byte(' ');
+	print_byte(' ');
+	print_byte(' ');
+}

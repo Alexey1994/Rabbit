@@ -24,9 +24,11 @@ typedef struct
 PCI_Device;
 
 
-unsigned int read_from_PCI       (Byte bus, Byte device, Byte function, Byte register_number);
+//unsigned int read_from_PCI       (Byte bus, Byte device, Byte function, Byte register_number);
+unsigned int read_from_PCI_device (PCI_Device *device, Byte register_number);
 void         write_in_PCI_device (PCI_Device *device, Byte register_number, unsigned int data);
 void         print_PCI_device    (PCI_Device *device);
+void         find_PCI_devices    (void(*on_finded)(PCI_Device *device));
 
 
 #include "PCI.c"
