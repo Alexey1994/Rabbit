@@ -1,15 +1,17 @@
 #ifndef PORTS_H_INCLUDED
 #define PORTS_H_INCLUDED
 
-
 #include "../../../types.h"
 
 
-Byte in(short port);
-void out(short port, Byte data);
+Byte           in_8   (short port);
+void           out_8  (short port, Byte data);
 
-void out32(short port, int data);
-int  in32(short port);
+unsigned short in_16  (short port);
+void           out_16 (short port, unsigned short data);
+
+void           out32  (short port, int data);
+int            in32   (short port);
 
 
 #include "ports.c"

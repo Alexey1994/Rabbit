@@ -1,20 +1,20 @@
 void write_in_AMD_PCNET(unsigned int base_address, unsigned int data)
 {
-	out32(base_address + 0x14, data);
+	out_32(base_address + 0x14, data);
 }
 
 
 void write_in_CSR(unsigned int base_address, unsigned int CSR, unsigned int data)
 {
 	write_in_AMD_PCNET(base_address, CSR);
-	out32(base_address + 0x10, data);
+	out_32(base_address + 0x10, data);
 }
 
 
 unsigned int read_from_AMD_PCNET(unsigned int base_address, unsigned int CSR_number)
 {
 	write_in_AMD_PCNET(base_address, CSR_number);
-	return in32(base_address + 0x10);
+	return in_32(base_address + 0x10);
 }
 
 

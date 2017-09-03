@@ -1,4 +1,4 @@
 Byte get_key_code()
 {
-	return in(0x60);
+	return in_8(0x60);
 }

@@ -22,7 +22,6 @@ void start()
 
 #include "system/devices/network/ethernet/AMD PCNET/AMD PCNET.h"
 
-
 /*
 void test_memory()
 {
@@ -99,18 +98,19 @@ void find_devices(PCI_Device *device)
 {
 	if(device->device == 0x2000 && device->vendor == 0x1022)
 	{
-		print_null_terminated_byte_array("AMD PCNET finded\n");
+		//print_null_terminated_byte_array("AMD PCNET finded\n");
 		configure_AMD_PCNET(device);
 	}
 	else if(device->device == 0x7000 && device->vendor == 0x8086)
 	{
-		print_null_terminated_byte_array("VGA controller finded\n");
+		//print_null_terminated_byte_array("VGA controller finded\n");
 		//configure_VGA(device);
 	}
 	else
 		;//configure_AMD_PCNET(device);
 
-	//print_PCI_device(device);
+	print_PCI_device(device);
+	print_null_terminated_byte_array("\n");
 }
 
 
@@ -123,4 +123,7 @@ void kernel()
 	initialize_output (default_screen_output, default_screen, write_byte_in_text_screen);
 
 	find_PCI_devices(find_devices);
+
+	//out_16(0x3ce, 1);
+	//out_16(0x3ce, 0x05);
 }

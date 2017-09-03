@@ -1,16 +1,3 @@
-/*unsigned int read_from_PCI (Byte bus, Byte device, Byte function, Byte register_number)
-{
-	unsigned int device_address =
-		  0b10000000000000000000000000000000 //enable bit
-		| (bus << 16)
-		| (device << 11)
-		| (function << 8)
-		| ((register_number << 2) & 0b11111100);
-
-	out32(0xcf8, device_address);
-	return in32(0xcfc);
-}*/
-
 unsigned int read_from_PCI_device (PCI_Device *device, Byte register_number)
 {
 	unsigned int device_address =
@@ -20,8 +7,8 @@ unsigned int read_from_PCI_device (PCI_Device *device, Byte register_number)
 		| (device->ID.function << 8)
 		| ((register_number << 2) & 0b11111100);
 
-	out32(0xcf8, device_address);
-	return in32(0xcfc);
+	out_32(0xcf8, device_address);
+	return in_32(0xcfc);
 }
 
 
@@ -34,7 +21,7 @@ void write_in_PCI_device(PCI_Device *device, Byte register_number, unsigned int 
 		| (device->ID.function << 8)
 		| ((register_number << 2) & 0b11111100);
 
-	out32(0xcfc, data);
+	out_32(0xcfc, data);
 }
 
 

@@ -1,4 +1,4 @@
-Byte in(short port)
+Byte in_8(short port)
 {
 	Byte data;
 
@@ -12,18 +12,38 @@ Byte in(short port)
 }
 
 
-void out(short port, Byte data)
+void out_8(short port, Byte data)
 {
 	asm volatile("outb %0, %1" : : "a"(data), "Nd"(port));
 }
 
 
-void out32(short port, int data)
+unsigned short in_16(short port)
+{
+	unsigned short data;
+
+	asm volatile(
+		"inl %1, %0"
+		: "=a"(data)
+		: "Nd"(port)
+	);
+
+	return data;
+}
+
+
+void out_16(short port, unsigned short data)
 {
 	asm volatile("outl %0, %1" : : "a"(data), "Nd"(port));
 }
 
-int in32(short port)
+
+void out_32(short port, int data)
+{
+	asm volatile("outl %0, %1" : : "a"(data), "Nd"(port));
+}
+
+int in_32(short port)
 {
 	int data;
 
