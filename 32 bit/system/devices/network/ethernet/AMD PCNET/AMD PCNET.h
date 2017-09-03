@@ -1,0 +1,9 @@
+#ifndef AMD_PCNET_DEVICE_H_INCLUDED
+#define AMD_PCNET_DEVICE_H_INCLUDED
+
+
+#include "../../PCI/PCI.h"
+
+
+
+#endif //AMD_PCNET_DEVICE_H_INCLUDED
