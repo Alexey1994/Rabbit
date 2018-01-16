@@ -7,7 +7,6 @@ void start()
 	for(;;);
 }
 
-
 #include "types.h"
 #include "extends.h"
 #include "output/output.h"
@@ -99,6 +98,8 @@ void find_devices(PCI_Device *device)
 	if(device->device == 0x2000 && device->vendor == 0x1022)
 	{
 		//print_null_terminated_byte_array("AMD PCNET finded\n");
+		
+		print_null_terminated_byte_array("AMD PCNET finded\n");
 		configure_AMD_PCNET(device);
 	}
 	else if(device->device == 0x7000 && device->vendor == 0x8086)
@@ -109,20 +110,56 @@ void find_devices(PCI_Device *device)
 	else
 		;//configure_AMD_PCNET(device);
 
-	print_PCI_device(device);
-	print_null_terminated_byte_array("\n");
+	//print_PCI_device(device);
+	//print_null_terminated_byte_array("\n");
 }
 
+void u(char *s, char d)
+{
+	if(((d>>4)&0b00001111) < 10)
+		s[0] = (((d>>4)&0b00001111)) + '0';
+	else
+		s[0] = (((d>>4)&0b00001111 - 10)) + 'a';
+
+	if((d&0b00001111) < 10)
+		s[2] = (d&0b00001111) + '0';
+	else
+		s[2] = (d&0b00001111 - 10) + 'a';
+}
 
 void kernel()
 {
 	Text_Screen   *default_screen        = get_default_text_screen();
 	Output        *default_screen_output = get_default_text_screen_output();
 
-	initialize_text_screen (default_screen, 0x0B8000, 80, 25);
-	initialize_output (default_screen_output, default_screen, write_byte_in_text_screen);
+	//initialize_text_screen (default_screen, 0x0B8000, 80, 25);
+	//initialize_output (default_screen_output, default_screen, &write_byte_in_text_screen);
+	
+	char *d = default_screen;
+	char *t = 0x0B8000;
 
-	find_PCI_devices(find_devices);
+	u(t,    d[3]);
+	u(t+4,  d[2]);
+	u(t+8,  d[1]);
+	u(t+12, d[0]);
+/*
+	t[0] = d[0]>>4 + '0';
+	t[2] = d[0]&0b00001111 + '0';
+
+	t[4] = d[1]>>4 + '0';
+	t[6] = d[1]&0b00001111 + '0';
+
+	t[8] = d[2]>>4 + '0';
+	t[10] = d[2]&0b00001111 + '0';
+
+	t[12] = d[3]>>4 + '0';
+	t[14] = d[3]&0b00001111 + '0';*/
+	//write_byte_in_text_screen(default_screen, 'h');
+	//write_byte_in_text_screen(default_screen, 'i');
+	//print_null_terminated_byte_array("start kernel\n");
+	//print_unsigned_integer(1);
+	
+	//find_PCI_devices(find_devices);
 
 	//out_16(0x3ce, 1);
 	//out_16(0x3ce, 0x05);

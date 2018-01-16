@@ -10,6 +10,16 @@ start:
 	mov sp, 0x8000 - 1     ; stack size for loader = 0x8000 - 0x7c00 - 512 = 512 byte
 	sti
 
+	mov ah, 0x4f           ; VESA functions
+	mov al, 0x02           ; set video mode
+	mov bx, 0x4112         ; 640x480 32bit
+	int 10h
+
+	mov ax,  0x4f01
+	mov cx,  0x4118
+	mov edi, 0x7E00        ; video info
+	int 10h
+
 	call load_kernel
 
 	lgdt [GDT_pointer]
@@ -21,7 +31,7 @@ start:
 
 	jmp 8:code_32         ; CS register = 8, IP register = code_32
 
-	%include "16 bit\load kernel.asm"
+%include "16 bit\load kernel.asm"
 
 use32
 code_32:
@@ -29,11 +39,10 @@ code_32:
 	mov ds, ax
 	mov ss, eax
 
-	mov eax, 123456
+	mov eax, 12345678
 	mov esp, eax
 
-	;call 0
-	call end + 512
+	call 0x8000
 	jmp $
 
 align 16
@@ -75,5 +84,3 @@ GDT_pointer:
 
 times 510 - ($ - start) db 0
 db 0x55, 0xAA
-
-end:

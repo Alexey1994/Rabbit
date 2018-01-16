@@ -5,10 +5,10 @@ unsigned int read_from_PCI_device (PCI_Device *device, Byte register_number)
 		| (device->ID.bus << 16)
 		| (device->ID.device << 11)
 		| (device->ID.function << 8)
-		| ((register_number << 2) & 0b11111100);
+		| (register_number & 0b11111100);
 
 	out_32(0xcf8, device_address);
-	return in_32(0xcfc);
+	return in_32(0xcfc + (register_number & 0b00000011));
 }
 
 
@@ -19,9 +19,10 @@ void write_in_PCI_device(PCI_Device *device, Byte register_number, unsigned int 
 		| (device->ID.bus << 16)
 		| (device->ID.device << 11)
 		| (device->ID.function << 8)
-		| ((register_number << 2) & 0b11111100);
+		| (register_number & 0b11111100);
 
-	out_32(0xcfc, data);
+	out_32(0xcf8, device_address);
+	out_32(0xcfc + (register_number & 0b00000011), data);
 }
 
 
