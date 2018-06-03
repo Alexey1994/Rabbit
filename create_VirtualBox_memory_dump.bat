@@ -1,0 +1,1 @@
+VBoxManage.exe debugvm "Rabbit" dumpvmcore --filename "f:\dump"
