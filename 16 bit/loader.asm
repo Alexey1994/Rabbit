@@ -10,15 +10,15 @@ start:
 	mov sp, 0x8000 - 1     ; stack size for loader = 0x8000 - 0x7c00 - 512 = 512 byte
 	sti
 
-	mov ah, 0x4f           ; VESA functions
-	mov al, 0x02           ; set video mode
-	mov bx, 0x4112         ; 640x480 32bit
-	int 10h
+	;mov ah, 0x4f           ; VESA functions
+	;mov al, 0x02           ; set video mode
+	;mov bx, 0x4112         ; 640x480 32bit
+	;int 10h
 
-	mov ax,  0x4f01
-	mov cx,  0x4118
-	mov edi, 0x7E00        ; video info
-	int 10h
+	;mov ax,  0x4f01
+	;mov cx,  0x4118
+	;mov edi, 0x7E00        ; video info
+	;int 10h
 
 	call load_kernel
 
@@ -35,50 +35,57 @@ start:
 
 use32
 code_32:
-	mov eax, 16
-	mov ds, ax
+	mov ax, 16
+	mov ds, eax
 	mov ss, eax
 
-	mov eax, 12345678
+	mov eax, 0x14000
 	mov esp, eax
 
-	call 0x8000
+	call 0x10000
 	jmp $
 
 align 16
 
 GDT:
-    dq 0                  ; dummy
+    ; dummy
+    dq 0
 
-                          ; CODE (CS register = 8)
-    dw 0xffff             ; Segment Limit
-    dw 0                  ; Base address
-    db 0                  ; Base address
-    db 0b10011010         ; segment present   = 1 (segment is valid)
-                          ; ring              = 00 (maximum)
-                          ; descriptor type   = 1 (code and data)
-                          ; type              = 1010 (read/execute)
-    db 0b11001111         ; Granularity       = 1 (max memory size = 4096 * Segment Limit)
-                          ; 32 bit addressing = 1 (enabled)
-                          ; L                 = 0
-                          ; AVL               = 0
-                          ; Segment Limit     = 1111
-    db 0                  ; Base address
+    ; CODE (CS register = 8)
+    dw 0xffff     ; размер сегмента
+    dw 0          ; базовый адрес
+    db 0          ; базовый адрес
+    db 0b10011110 ; 1    сегмент правильный(должно быть 1)
+                  ; 00   уровень привилегий(меньше - больше привилегий)
+                  ; 1    если сегмент в памяти то 1
+                  ; 1    сегмент исполняемый
+                  ; 1    направление для сегмента данных либо возможность перехода с низких привилегий на высокие для сегмента кода
+                  ; 1    разрешение на чтение для сегмента кода, разрешение на запись для сегмента данных
+                  ; 0    бит доступа к сегменту, устанавливается процессором(рекомендуется 0)
+    db 0b11001111 ; 1    гранулярность(если 0, то размер адреса равен размеру сегмента кода, если 1 то размеру сегмента кода * 4096)
+                  ; 1    размер, если 0 и 64 битный режим(следующий бит) = 0, то селектор определяет 16 битный режим, если 1 - 32 битный. Если 64 битный режим равен 1, то должен быть равен 0(значение 1 зарезервировано, будет генерировать исключение)
+                  ; 0    64 битный режим
+                  ; 0    AVL(?)
+                  ; 1111 размер сегмента
+    db 0          ;      базовый адрес
 
-                          ; DATA (DS register = 16)
-    dw 0xffff             ; Segment Limit
-    dw 0                  ; Base address
-    db 0                  ; Base address
-    db 0b10010010         ; segment present   = 1 (segment is valid)
-                          ; ring              = 00 (maximum)
-                          ; descriptor type   = 1 (code and data)
-                          ; type              = 0010 (read/write)
-    db 0b11001111         ; Granularity       = 1 (max memory size = 4096 * Segment Limit)
-                          ; 32 bit addressing = 1 (enabled)
-                          ; L                 = 0
-                          ; AVL               = 0
-                          ; Segment Limit     = 1111
-    db 0                  ; Base address
+    ; DATA (DS register = 16)
+    dw 0xffff     ; размер сегмента
+    dw 0          ; базовый адрес
+    db 0          ; базовый адрес
+    db 0b10010010 ; 1    сегмент правильный(должно быть 1)
+                  ; 00   уровень привилегий(меньше - больше привилегий)
+                  ; 1    если сегмент в памяти то 1
+                  ; 0    сегмент исполняемый
+                  ; 0    направление для сегмента данных либо возможность перехода с низких привилегий на высокие для сегмента кода
+                  ; 1    разрешение на чтение для сегмента кода, разрешение на запись для сегмента данных
+                  ; 0    бит доступа к сегменту, устанавливается процессором(рекомендуется 0)
+    db 0b11001111 ; 1    гранулярность(если 0, то размер адреса равен размеру сегмента кода, если 1 то размеру сегмента кода * 4096)
+                  ; 1    размер, если 0 и 64 битный режим(следующий бит) = 0, то селектор определяет 16 битный режим, если 1 - 32 битный. Если 64 битный режим равен 1, то должен быть равен 0(значение 1 зарезервировано, будет генерировать исключение)
+                  ; 0    64 битный режим
+                  ; 0    AVL(?)
+                  ; 1111 размер сегмента
+    db 0          ;      базовый адрес
 
 GDT_pointer:
 	dw $ - GDT - 1

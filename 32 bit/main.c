@@ -3,8 +3,6 @@ void kernel();
 void start()
 {
 	kernel();
-
-	for(;;);
 }
 
 #include "types.h"
@@ -43,22 +41,22 @@ void test_memory()
 
 //#include "devices/ports.h"
 
-
+/*
 void configure_VGA(PCI_Device *device)
 {
 	unsigned int device_config;
 	unsigned int base_address;
-/*
-	device_config = read_from_PCI_device(device, 4);
 
-	device_config = (device_config & 0xffff0000)
-		| 0b00000101;
+	//device_config = read_from_PCI_device(device, 4);
 
-	write_in_PCI_device(device, 4, device_config);*/
-/*
-	write_in_PCI_device(device, 4, 0x00000004);
-	write_in_PCI_device(device, 4, 0x00035f00);
-*/
+	//device_config = (device_config & 0xffff0000)
+	//	| 0b00000101;
+
+	//write_in_PCI_device(device, 4, device_config);
+
+	//write_in_PCI_device(device, 4, 0x00000004);
+	//write_in_PCI_device(device, 4, 0x00035f00);
+
 	base_address = read_from_PCI_device(device, 4);
 
 	print_null_terminated_byte_array("\nbase address0 ");
@@ -90,7 +88,7 @@ void configure_VGA(PCI_Device *device)
 	print_unsigned_integer(base_address);
 
 	print_null_terminated_byte_array("\n");
-}
+}*/
 
 
 void find_devices(PCI_Device *device)
@@ -114,6 +112,7 @@ void find_devices(PCI_Device *device)
 	//print_null_terminated_byte_array("\n");
 }
 
+/*
 void u(char *s, char d)
 {
 	if(((d>>4)&0b00001111) < 10)
@@ -125,16 +124,17 @@ void u(char *s, char d)
 		s[2] = (d&0b00001111) + '0';
 	else
 		s[2] = (d&0b00001111 - 10) + 'a';
-}
+}*/
 
 void kernel()
 {
 	Text_Screen   *default_screen        = get_default_text_screen();
 	Output        *default_screen_output = get_default_text_screen_output();
 
-	//initialize_text_screen (default_screen, 0x0B8000, 80, 25);
+	initialize_text_screen (default_screen, 0x0B8000, 80, 25);
 	//initialize_output (default_screen_output, default_screen, &write_byte_in_text_screen);
 	
+	/*
 	char *d = default_screen;
 	char *t = 0x0B8000;
 
@@ -142,6 +142,8 @@ void kernel()
 	u(t+4,  d[2]);
 	u(t+8,  d[1]);
 	u(t+12, d[0]);
+	*/
+
 /*
 	t[0] = d[0]>>4 + '0';
 	t[2] = d[0]&0b00001111 + '0';

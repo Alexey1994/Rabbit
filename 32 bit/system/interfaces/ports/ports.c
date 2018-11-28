@@ -23,7 +23,7 @@ unsigned short in_16(short port)
 	unsigned short data;
 
 	asm volatile(
-		"inl %1, %0"
+		"in %1, %0"
 		: "=a"(data)
 		: "Nd"(port)
 	);
@@ -34,7 +34,7 @@ unsigned short in_16(short port)
 
 void out_16(short port, unsigned short data)
 {
-	asm volatile("outl %0, %1" : : "a"(data), "Nd"(port));
+	asm volatile("out %0, %1" : : "a"(data), "Nd"(port));
 }
 
 

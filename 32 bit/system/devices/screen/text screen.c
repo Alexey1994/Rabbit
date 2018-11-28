@@ -1,10 +1,10 @@
 void initialize_text_screen(Text_Screen *text_screen, Byte *address, unsigned int x_max, unsigned int y_max)
 {
-	text_screen->address = address;
-	text_screen->x_coord = 0;
+	//text_screen->address = address;
+	/*text_screen->x_coord = 0;
 	text_screen->y_coord = 0;
 	text_screen->x_max   = x_max;
-	text_screen->y_max   = y_max;
+	text_screen->y_max   = y_max;*/
 }
 
 
