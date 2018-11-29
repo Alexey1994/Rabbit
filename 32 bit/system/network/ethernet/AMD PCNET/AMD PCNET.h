@@ -5,7 +5,7 @@
 #include "../../../PCI/PCI.h"
 
 
-void configure_AMD_PCNET(PCI_Device *device);
+procedure configure_AMD_PCNET(PCI_Device *device);
 
 
 #include "AMD PCNET.c"
