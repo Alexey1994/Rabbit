@@ -11,6 +11,7 @@ procedure start_system()
 
 #include "output/output.h"
 #include "system/text screen/text screen.h"
+#include "system/interrupts/interrupts.h"
 #include "system/network/ethernet/AMD PCNET/AMD PCNET.h"
 
 
@@ -37,7 +38,9 @@ function N_32 kmain()
 	initialize_text_screen (default_screen, 0x0B8000, 80, 25);
 	initialize_output (default_screen_output, default_screen, &write_byte_in_text_screen);
 
-    find_PCI_devices(&find_devices);
+    //find_PCI_devices(&find_devices);
+
+    initialize_interrupts();
 
 	return 0;
 }
